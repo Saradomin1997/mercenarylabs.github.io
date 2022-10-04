@@ -8,21 +8,18 @@
 </head>
 
 <body>
-    <div class="title">
-    <h1>Mercenary Labs</h1>
-    </div>
-    <h3><a href="https://discord.gg/hn4WaXj6bb" target="_blank">Our Discord Server</a></h3>
+    <div class="title"><h1>Mercenary Labs</h1></div>
+    <h3><a href="https://discord.gg/hn4WaXj6bb" target="_blank">Mercenary Labs Discord Server</a></h3>
+    <h4><a href="https://twitter.com/mercenary_labs" target="_blank">Mercenary Labs Twitter</a></h4>
     <img src="https://media.discordapp.net/attachments/1013538974129725445/1018697102802567219/patch.png" width="80" height="80">
-    <h4><a href="https://media.discordapp.net/attachments/991484234546036856/1026676402042454127/IMG_9162.png" target="_blank"> Website Developed By Li</h4>
-</body>
 
 <script>
 
     const COLOR_BG = "black";
     const COLOR_CUBE = "#7b23ff";
-    const SPEED_X = 0.05;
-    const SPEED_Y = 0.15;
-    const SPEED_Z = 0.10;
+    const SPEED_X = 0.15;
+    const SPEED_Y = 0.25;
+    const SPEED_Z = 0.20;
     const POINT3D = function(x, y, z) { this.x = x; this.y = y; this.z = z; };
     var canvas = document.createElement("canvas");
     document.body.appendChild(canvas);
@@ -95,8 +92,11 @@
         }
         requestAnimationFrame(loop);
     }
-
 </script>
+
+<h6>Developed by Li</h6>
+
+</body>
 
 <style>
     body {
@@ -108,13 +108,22 @@
         align-items: center;
         margin: 0;
     }
+
     canvas {
-        display: flex;
         display: block;
         text-align: center;
         justify-content: center;
         align-items: center;
     }
+
+    a {
+        color: red;
+    }
+
+    h6 {
+        color: white;
+    }
+
     .title {
         text-align: center;
         color: #7b23ff;
