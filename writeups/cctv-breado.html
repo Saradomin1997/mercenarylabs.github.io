@@ -110,7 +110,7 @@
                                             <h4 style="margin-top:5px;">CCTV Challenge Page: <a href="https://cctv-web.2021.ctfcompetition.com/">https://cctv-web.2021.ctfcompetition.com/</a></h4>
 
                                             <h2>Intro</h2>
-                                            This ctf challenge was pretty fun. For me, it was pretty hard to figure out,
+                                            This CTF challenge was pretty fun. For me, it was pretty hard to figure out,
                                             since ive never participated in this kind of ctf before. But after solving
                                             it, it seems pretty easy, and I'm gonna tell you guys how I did it, my thoughts through the whole
                                             challenge, etc. It took me about 40 minutes to complete. Lets hop right in.
@@ -124,7 +124,7 @@
 
                                             The description of the challenge says this: <br><br>
 
-                                            <i>You have now investigated the chemical plant. Nothing seemed to be out
+                                            <i>"You have now investigated the chemical plant. Nothing seemed to be out
                                             of the ordinary, even though the workers acted somewhat passive, but
                                             thats not a good enough to track. It seems like you have a new voice
                                             mail from the boss: "hello there, agent! It seems like the corporation
@@ -135,10 +135,10 @@
                                             you should be able to see a black car arriving now, and it will carry
                                             you to the airport. Good luck!"</i> <br><br>
 
-                                            The story is cool, but it doesnt really help me with the ctf. Under the
+                                            The story is cool, but it doesnt really help me with the CTF. Under the
                                             text, I can see a little field, with a link:
                                             https://cctv-web.2021.ctfcompetition.com. <br><br>
-                                            Which is obviously the ctf
+                                            Which is obviously the CTF
                                             challenge. Clicking on that, I arrive on a page that looks like this:
 
                                             <br><br><img class="aligncenter" src="images/cctv-breado-2.png"><br>
@@ -146,7 +146,7 @@
                                             <h2>Part 2</h2>
                                             As we can see, theres a input box, which prompts us to input the
                                             password in order to gain access to the site. My very first thought
-                                            was, that I could try to perform an xss attack (executing
+                                            was, that I could try to perform a XSS attack (executing
                                             javascript code inside a site trough unsanitized input), so I went
                                             right ahead, putting this into the input box:
                                             <pre><code class="language-js">&lt;script&gt;alert(&quot;. &quot;);&lt;/script&gt;</code></pre>
@@ -158,7 +158,7 @@
 
                                             <br><br><img class="aligncenter" src="images/cctv-breado-3.png"><br>
 
-                                            :ooking at the javascript code, I was able to see that it
+                                            Looking at the javascript code, I was able to see that it
                                             creates a fucnction called "checkpassword", which is obviously
                                             exactly what I'm looking for. Looking further into the code, I
                                             can see the following things: <br>
@@ -177,10 +177,10 @@
                                             Looking at the if statement, I can see that it checks if the
                                             resulting array matches the one mentioned above, if it does, it
                                             redirects the challenger to another site, with the filename
-                                            being the password string you entered + . Html<br><br>
+                                            being the password string you entered + . html<br><br>
 
                                             My first thought was to just make the if statement do the
-                                            opposite of ehat it does, by adding a ! Flr "not" to the if
+                                            opposite of ehat it does, by adding a ! for "not" to the if
                                             statement, like so:
 
                                             <br><br><img class="aligncenter" src="images/cctv-breado-4.png"><br>
