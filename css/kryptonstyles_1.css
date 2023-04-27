@@ -1,0 +1,77 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+}
+
+.main-box {
+    width: 80%;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+
+.sidebar {
+    flex-basis: 25%;
+    padding: 20px;
+    background-color: #f2f2f2;
+}
+
+.content {
+    flex-basis: 75%;
+    padding: 20px;
+}
+
+.section-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.text {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.text a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.text a:hover {
+    text-decoration: underline;
+}
+
+.projects-list {
+    padding-left: 20px;
+}
+
+.contact-info {
+    margin-bottom: 10px;
+}
+
+.footer {
+    margin-top: auto;
+    margin-bottom: 0;
+}
+.credits {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f2f2f2;
+    padding: 10px;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 18px;
+    text-align: center;
+    margin-top: auto;
+    margin-bottom: 20px;
+}
