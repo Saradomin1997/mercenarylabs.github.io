@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <title>Mercenary Labs - Flask/Jinja2 SSTI</title>
+    <link rel="icon" type="image/jpg" href="/images/favicon.ico">
+    <link rel="stylesheet" href="https://mercenarylabs.net/css/tokyo-night-dark.min.css">
+    <link rel='stylesheet' id='ghostkit-css' href='https://mercenarylabs.net/css/1-style.min.css' media='all' />
+    <link rel='stylesheet' id='ghostkit-block-grid-css' href='https://mercenarylabs.net/css/2-style.min.css'
+        media='all' />
+    <link rel='stylesheet' id='cyberpulse-css' href='https://mercenarylabs.net/css/main.css' media='all' />
+    <link rel='stylesheet' href='https://mercenarylabs.net/css/style.css' media='all' />
+    <link rel='stylesheet' id='ghostkit-fonts-adobe-css' href='https://use.typekit.net/tfy7mmd.css?ver=1.7.3'
+        media='all' />
+    <script src='https://mercenarylabs.net/js/jquery.min.js' id='jquery-core-js'></script>
+    <script src='https://mercenarylabs.net/js/jquery-migrate.min.js' id='jquery-migrate-js'></script>
+    <script src='https://mercenarylabs.net/js/imagesloaded.min.js' id='imagesloaded-js'></script>
+    <script id='cyberpulse-preloader-js-extra'> var cplPreloaderData = { "show_once": "" }; </script>
+    <script src='https://mercenarylabs.net/js/preloader.js' id='cyberpulse-preloader-js'></script>
+    <script
+        id='ghost-framework-night-mode-js-extra'> var ghostFrameworkNightMode = { "default": "night", "is_editor": "", "use_local_storage": "", "night_class": "cpl-night-mode", "switching_class": "cpl-night-mode-switching", "toggle_selector": ".cpl-night-mode-toggle" }; </script>
+    <script src='https://mercenarylabs.net/js/night-mode.min.js' id='ghost-framework-night-mode-js'></script>
+</head>
+
+<body
+    class="home page-template-default page page-id-6 wp-embed-responsive content-size-container content-without-top-margin content-without-bottom-margin">
+
+    <div class="cpl-preloader">
+        <div class="cpl-preloader-logo">
+            <!-- <img src="logo.png" class="cpl-logo-night" data-skip-lazy="" alt="" /> -->
+        </div>
+    </div>
+
+    <div class="cpl-page-noise"></div>
+
+    <div id="page" class="site">
+
+        <header id="masthead" class="site-header">
+            <div class="cpl-navbar-container cpl-navbar-collapse-md cpl-navbar-align-right">
+                <a href="/" class="cpl-navbar-logo">
+                    <h1>ML</h1>
+                </a>
+            </div>
+        </header>
+
+        <div id="content" class="site-content" tabindex="-1">
+            <div id="primary" class="content-area">
+                <main id="main" class="site-main">
+                    <article id="post-6" class="post-6 page type-page status-publish hentry">
+                        <div class="entry-content">
+                            <div style="padding-bottom:1px!important;padding-top:1px!important"
+                                class="ghostkit-grid ghostkit-grid-gap-md ghostkit-grid-with-bg ghostkit-custom-1709OK">
+                                <div class="nk-awb alignfull">
+                                    <div class="nk-awb-wrap" data-awb-type="image" data-awb-parallax="scroll"
+                                        data-awb-parallax-speed="0.8" data-awb-parallax-mobile="true"
+                                        data-awb-image-background-size="cover"
+                                        data-awb-image-background-position="50% 10%">
+                                        <div class="nk-awb-overlay" style="background-color: rgba(23, 23, 23, 0.8);">
+                                        </div>
+                                        <div class="nk-awb-inner"> <img class="vp-lazyload"
+                                                data-src="https://mercenarylabs.net/images/soldiers.jpg"
+                                                data-sizes="auto" loading="eager" height="1em"> </div>
+                                    </div>
+                                </div>
+
+                                <div class="ghostkit-grid-inner">
+                                    <div class="ghostkit-col ghostkit-col-12">
+                                        <div class="ghostkit-col-content">
+                                            <p class="has-text-align-center has-text-color"
+                                                style="color:#f4f4f4;font-size:50px"
+                                                data-ghostkit-sr="fade-up;distance:10px;duration:500;delay:100">
+                                                <span class="ghostkit-text-uppercase">
+                                                    <strong>WRITE-UP</strong>
+                                                </span>
+                                            </p>
+
+                                            <div class="wp-block-image ghostkit-custom-Z1gmenb">
+                                                <a> <img loading="lazy" class="aligncenter vp-lazyload" width="250px"
+                                                        data-src="https://mercenarylabs.net/images/patch_bl.png"
+                                                        data-sizes="auto"> </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="padding-top:80px!important;padding-bottom:0px!important;"
+                                class="ghostkit-grid ghostkit-grid-gap-md ghostkit-grid-with-bg ghostkit-custom-22dvsW">
+                                <div class="nk-awb alignfull">
+                                    <div class="nk-awb-wrap" data-awb-type="color">
+                                        <div class="nk-awb-overlay" style="background-color: #101010;"></div>
+                                    </div>
+                                </div>
+
+                                <div class="ghostkit-grid-inner" style="justify-content: center;">
+                                    <div class="ghostkit-col ghostkit-col-8">
+                                        <div class="ghostkit-col-content">
+
+                                            <!-- Start of Content-->
+
+                                            <h1 class="has-text-align-center"
+                                                data-ghostkit-sr="fade-up;distance:1px;duration:500;delay:200">
+                                                CTF CHALLENGE - Flask/Jinja2 SSTI
+                                            </h1>
+                                            <h3 class="has-text-align-center"
+                                                data-ghostkit-sr="fade-up;distance:1px;duration:500;delay:200">
+                                                By: <a href=https://www.realmit.eu>mit</a>
+                                            </h3>
+
+                                            <h2>Intro</h2>
+                                            o7. My name is Mit, I'm practicing to become a competent CTF player and I
+                                            recently engaged on a training platform CTF where i ran into a challenge
+                                            that had me stuck for a long time..
+                                            <br><br>
+
+                                            I decided to make a writeup on it! The second challenge really taught me a
+                                            great amount with the amount of time I “wasted” on it…
+                                            <br><br>
+
+                                            Since we were given the full source of the web app, including a docker image
+                                            to deploy our own instance I also retrieved data about the directory
+                                            structure of the web app which notably remained consistent in both
+                                            challenges, so I will not be reposting the following within this page.
+                                            <br>
+                                            <pre class="align-items-center"><code class="language-python">from flask import Flask, request, render_template_string, abort
+app = Flask(__name__)
+# Don&#39;t let them cat my flag!
+BLOCKLIST = [&quot;flag.txt&quot;]
+
+HEAD = &quot;&quot;&quot;
+    &lt;head&gt;
+        &lt;title&gt;Welcome to My Website&lt;/title&gt;
+        &lt;style&gt;
+        /* Reset default styles */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+    
+        /* Center container */
+        .container {
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    
+        /* Style for title */
+        .title {
+            font-size: 36px;
+            text-align: center;
+        }
+    
+        /* Style for subtitle */
+        .subtitle {
+            font-size: 18px;
+            text-align: center;
+        }
+    
+        /* Style for form */
+        .form {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    
+        /* Style for input field */
+        .input {
+            padding: 10px;
+            border: none;
+            border-bottom: 1px solid #ccc;
+            margin-right: 10px;
+            width: 200px;
+            font-size: 16px;
+            outline: none;
+        }
+    
+        /* Style for submit button */
+        .button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            outline: none;
+        }
+    
+        /* Style for submit button on hover */
+        .button:hover {
+            background-color: #0056b3;
+        }
+        &lt;/style&gt;
+    &lt;/head&gt;
+&quot;&quot;&quot;
+
+
+@app.route(&quot;/&quot;)
+def hello_world():
+    p = request.args.get(&quot;p&quot;)
+    if p:
+        for bad in BLOCKLIST:
+            if bad in p:
+                abort(403)
+        if len(p) &gt; 200:
+            return &quot;Name is too long.&quot;
+        return render_template_string(
+            f&quot;&quot;&quot;
+            &lt;!DOCTYPE html&gt;
+            &lt;html&gt;
+            {HEAD}
+            &lt;body&gt;
+                &lt;div class=&quot;container&quot;&gt;
+                    &lt;h1 class=&quot;title&quot;&gt;Get off my website {p}&lt;/h1&gt;
+                &lt;/div&gt;
+            &lt;/body&gt;
+            &lt;/html&gt;
+            &quot;&quot;&quot;
+        )
+    return f&quot;&quot;&quot;
+        &lt;!DOCTYPE html&gt;
+        &lt;html&gt;
+        {HEAD}
+        &lt;body&gt;
+            &lt;div class=&quot;container&quot;&gt;
+            &lt;h1 class=&quot;title&quot;&gt;Welcome to My Website&lt;/h1&gt;
+            &lt;p class=&quot;subtitle&quot;&gt;Please enter your name to get started&lt;/p&gt;
+            &lt;form id=&quot;nameForm&quot; class=&quot;form&quot;&gt;
+                &lt;input type=&quot;text&quot; id=&quot;nameInput&quot; class=&quot;input&quot; placeholder=&quot;Your Name&quot; name=&quot;p&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;button&quot;&gt;Submit&lt;/button&gt;
+            &lt;/form&gt;
+            &lt;/div&gt;
+        &lt;/body&gt;
+        &lt;/html&gt;
+    &quot;&quot;&quot;</code></pre>
+                                            Right away, we can note that Flask is used as a web framework here, this
+                                            means we can do our research on Flask and potential vulnerabilities within
+                                            it. Reading into it, I deduced fairly quickly that it is likely an SSTI
+                                            (Server-Side Template Injection) vulnerability. Let's us do a quick analysis
+                                            on the code and how we can spot this:
+                                            <br><br>
+                                            <code>p = request.args.get("p")</code> <br>
+
+                                            <code>&lt;h1 class=&quot;title&quot;&gt;Get off my website {p}&lt;/h1&gt;</code><br><br>
+                                            Here, we can see p is defined as a variable based on our request arguments
+                                            with the parameter of p and printed with {p} to access it. We can now
+                                            confidently say that the server is using templates from the Flask/Jinja2
+                                            framework.<br><br>
+
+                                            Another thing to note in the source code, the BLOCKLIST that blocks flag.txt
+                                            from being passed as an input.<br><br>
+
+                                            There does not appear to be any more filtering within this challenge so we
+                                            are ready to move from the source code and begin to research how we may
+                                            exploit this web app.<br><br>
+
+                                            It was at this point I decided to research which lead me to <a
+                                                href="https://book.hacktricks.xyz/pentesting-web/ssti-server-side-template-injection/jinja2-ssti">HackTrickz</a>,
+                                            <a
+                                                href="https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Server%20Side%20Template%20Injection">PayloadAllTheThings</a>
+                                            and other standard resources for finding potential exploits. I will refer to
+                                            these sites as my resources from here on.
+                                            <br>
+
+                                            <br>
+                                            <img loading="lazy" class="aligncenter vp-lazyload"
+                                                data-src="images/temp-mit-1.png" data-sizes="auto">
+                                            <br>
+
+
+                                            Above, is a snippet of the Flask/Jinja2 documentation on template usage. We
+                                            see that code is run by wrapping the commands in double curly brackets.
+                                            Keeping this in mind and reading the payloads I have spotted on the sources
+                                            mentioned above, I was able to develop my first payload to test out on this
+                                            web app.
+
+                                            <br>
+
+                                            <h3>Proof of Concept:</h3>
+
+                                            <pre
+                                                class="align-items-center"><code class="language-python">?p={{6*6}}</code></pre>
+                                            <br>
+
+                                            <img loading="lazy" class="aligncenter vp-lazyload"
+                                                data-src="images/temp-mit-2.png" data-sizes="auto">
+                                            <br>
+
+                                            Awesome. From my research on the websites mentioned before on this page, I
+                                            found this simple payload to prove that I can exploit this web app. Now, my
+                                            next challenge is to navigate back a directory and read the flag file to
+                                            complete this challenge. So we must think, how can we get into a BASH
+                                            environment within the website and pass commands to it to achieve the goal
+                                            of capturing the flag?
+                                            <br><br>
+                                            At this point, I went the skiddy route.. Anyone here remember when skid was
+                                            exclusive to script kiddie and not recognized online as “stupid kid”? Random
+                                            side rant, let's continue..
+                                            <br>
+                                            So as I mentioned above, I went the skiddy route and started pasting as many
+                                            payloads as I could find from all sources on the internet. Eventually this
+                                            worked, but I'm going to pretend this didn't happen and instead explain the
+                                            process of reaching this goal myself. Trust me, there is nothing worse than
+                                            trying to heavily adjust a payload that you have no understanding of.. even
+                                            just as a minimal effort attempt, get a Language Learning Model (e.g
+                                            ChatGPT's GPT-3.5) to analyze it for you and then all you have to do is
+                                            follow the damn process. This was definitely a rookie mistake, and we will
+                                            just forget about this and pretend it never happened.
+                                            <br><br>
+
+                                            From my resources I discovered the following payload to list available
+                                            subclasses of the Request class.
+                                            <br>
+                                            <pre
+                                                class="align-items-center"><code class="language-python">?p={{ request.__class__.mro()[-1].__subclasses__() }}</code></pre>
+                                            <br>
+
+                                            <img loading="lazy" class="aligncenter vp-lazyload"
+                                                data-src="images/temp-mit-3.png" data-sizes="auto">
+                                            <br>
+
+                                            Wait.. what the hell is MRO? Don't ask me that's far above my paygrade..
+
+                                            Nah, just kidding! Here is a <a
+                                                href="https://pencilprogrammer.com/python-mro/">website</a> if you're
+                                            interested in reading about it but I will provide a brief summary anyways.
+
+                                            <pre
+                                                class="align-items-center"><code class="language-python">MRO = Method Resolution Order</code></pre>
+                                            <br>
+
+                                            MRO is the sequence that Python uses to find a method within a class.
+                                            However, passing the index of -1 to MRO will list the methods of the object
+                                            class and therefore list EVERY class available.<br><br>
+
+                                            It would seem we just struck gold here as we found a method to open a
+                                            process.<br>
+
+                                            Neat, but how do we proceed from thus point to pwning this web app?<br><br>
+
+                                            To answer this question, we return to our resources and find out about the
+                                            globals function, this is a built-in function that can access global
+                                            variables in a web application. Builtins in a special module that can access
+                                            functions and exceptions using standard import syntax within Python and
+                                            honestly if I need to explain what import means.. Well, that’s your chore
+                                            for learning of today.<br><br>
+
+                                            Hey, getting overloaded with information…? No worries, I actually find it a
+                                            lot simpler when viewing the query used as the payload:<br><br>
+
+                                            <pre
+                                                class="align-items-center"><code class="language-python">?p={{request.application.__globals__.__builtins__.__import__('os').popen('ls').read()}}</code></pre>
+
+                                            I hope this payload makes sense with the information I gave, but if it is
+                                            insufficient, please let me know and I can try make this more informative.
+                                            <br>
+                                            If you have any questions contact me and I’ll be happy to answer!<br><br>
+
+                                            <img loading="lazy" class="aligncenter vp-lazyload"
+                                                data-src="images/temp-mit-4.png" data-sizes="auto">
+                                            <br>
+
+                                            Hmm, alright. So we know that the flag is in the root directory and we know
+                                            from the directory structure I provided earlier that the web application is
+                                            actually in a directory called ‘app’. Let’s use some simple Bash terminal
+                                            commands to traverse back a directory and see what we find from running a ls
+                                            command in there.<br><br>
+
+                                            <img loading="lazy" class="aligncenter vp-lazyload"
+                                                data-src="images/temp-mit-5.png" data-sizes="auto">
+                                            <br>
+
+                                            Alright it’s time to do it. I’m gonna run the forbidden cat command to read
+                                            the file and see what is outputted.<br><br>
+
+                                            <img loading="lazy" class="aligncenter vp-lazyload"
+                                                data-src="images/temp-mit-6.png" data-sizes="auto">
+                                            <br>
+
+                                            I REDACTED THE FLAG FOR ABSOLUTELY NO REASON :3! <br><br>
+
+                                            This made me wonder.. what really was the point of the “flag.txt”
+                                            blacklist.. just bait? Since the filename goes to _ and then a string before
+                                            .txt it is not affected at all by the blacklist. Now, we have officially
+                                            solved Challenge 1.. but hold your horses as Challenge 2 is where it got
+                                            real tricky for me.<br><br>
+
+                                            <h2>Challenge 2: Hard Difficulty</h2>
+                                            SRC:
+                                            <pre class="align-items-center"><code class="language-python">from flask import Flask, request, render_template_string, abort
+
+app = Flask(__name__)
+# Prevent Server-Side Template Injection (https://portswigger.net/web-security/server-side-template-injection)
+BLOCKLIST = [&quot;{{&quot;, &quot;}}&quot;, &quot;\&quot;&quot;, &quot;&#39;&quot;]
+
+HEAD = &quot;&quot;&quot;
+    &lt;head&gt;
+        &lt;title&gt;Welcome to My Website&lt;/title&gt;
+        &lt;style&gt;
+        /* Reset default styles */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+    
+        /* Center container */
+        .container {
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    
+        /* Style for title */
+        .title {
+            font-size: 36px;
+            text-align: center;
+        }
+    
+        /* Style for subtitle */
+        .subtitle {
+            font-size: 18px;
+            text-align: center;
+        }
+    
+        /* Style for form */
+        .form {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    
+        /* Style for input field */
+        .input {
+            padding: 10px;
+            border: none;
+            border-bottom: 1px solid #ccc;
+            margin-right: 10px;
+            width: 200px;
+            font-size: 16px;
+            outline: none;
+        }
+    
+        /* Style for submit button */
+        .button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            outline: none;
+        }
+    
+        /* Style for submit button on hover */
+        .button:hover {
+            background-color: #0056b3;
+        }
+        &lt;/style&gt;
+    &lt;/head&gt;
+&quot;&quot;&quot;
+
+
+@app.route(&quot;/&quot;)
+def hello_world():
+    p = request.args.get(&quot;p&quot;)
+    if p:
+        for bad in BLOCKLIST:
+            if bad in p:
+                abort(403)
+        if len(p) &gt; 200:
+            return &quot;Name is too long.&quot;
+        return render_template_string(
+            f&quot;&quot;&quot;
+            &lt;!DOCTYPE html&gt;
+            &lt;html&gt;
+            {HEAD}
+            &lt;body&gt;
+                &lt;div class=&quot;container&quot;&gt;
+                    &lt;h1 class=&quot;title&quot;&gt;Get off my website {p}&lt;/h1&gt;
+                &lt;/div&gt;
+            &lt;/body&gt;
+            &lt;/html&gt;
+            &quot;&quot;&quot;
+        )
+    return f&quot;&quot;&quot;
+        &lt;!DOCTYPE html&gt;
+        &lt;html&gt;
+        {HEAD}
+        &lt;body&gt;
+            &lt;div class=&quot;container&quot;&gt;
+            &lt;h1 class=&quot;title&quot;&gt;Welcome to My Website&lt;/h1&gt;
+            &lt;p class=&quot;subtitle&quot;&gt;Please enter your name to get started&lt;/p&gt;
+            &lt;form id=&quot;nameForm&quot; class=&quot;form&quot;&gt;
+                &lt;input type=&quot;text&quot; id=&quot;nameInput&quot; class=&quot;input&quot; placeholder=&quot;Your Name&quot; name=&quot;p&quot;&gt;
+                &lt;button type=&quot;submit&quot; class=&quot;button&quot;&gt;Submit&lt;/button&gt;
+            &lt;/form&gt;
+            &lt;/div&gt;
+        &lt;/body&gt;
+        &lt;/html&gt;
+    &quot;&quot;&quot;</code></pre><br>
+
+                                            Alright, so we can spot right away that there is very little differences
+                                            between this source code and the previous one except for the following line:
+
+                                            <pre
+                                                class="align-items-center"><code class="language-python">BLOCKLIST = ["{{", "}}", "\"", "'"]</code></pre>
+                                            <br>
+                                            Let’s break this down.. Our next payload cannot use any of the following:
+
+                                            <pre class="align-items-center"><code class="language-python">" ("\""  is escaping the special character " to block it )
+{{ 
+}}
+'</code></pre>
+
+                                            Firstly, I looked into any workarounds to the blocking of ‘ and “ since it
+                                            is necessary to pass my commands to run as a string, but I am quite limited
+                                            on how I can do this without the use of them.<br><br>
+
+                                            Gentle reminder: the source code has a filter that blocks the p parameter
+                                            from being a length of over 200. This wasn’t very relevant in the previous
+                                            challenge; but now that we look into encoding characters the payload can get
+                                            significantly longer and this is a limitation on how we can encode.<br><br>
+
+                                            From my experimentation, no matter how I encoded the symbols in the block
+                                            list it was deciphered before the block list was applied to ?p.<br>
+
+                                            I tried:<br>
+
+                                            -<a href="https://www.w3schools.com/tags/ref_urlencode.ASP">URL
+                                                Encoding</a><br>
+                                            -<a href="https://www.ascii-code.com/">ASCII Character Codes</a><br>
+                                            -<a href="">probably more but I have forgotten..</a><br><br>
+
+                                            All of which ended up returning me a lovely 404 page error on
+                                            failure!<br><br>
+
+                                            I researched some more on encoding and eventually every possible payload
+                                            ended up being over 200 characters. Because of this I had to change my
+                                            methodology a little.<br><br>
+
+                                            I found a pretty good resource on potential filter bypasses. The filter
+                                            bypass is using Fullwidth ASCII variants and I can indeed pass them to the
+                                            webpage such as:<br>
+                                            <pre class="align-items-center"><code class="language-python">＇</code></pre>
+                                            <br>
+
+                                            Here is the <a
+                                                href="https://unicode.org/charts/nameslist/n_FF00.html">link</a> for a
+                                            page containing a list of Fullwidth ASCII characters, if you are interested.
+
+
+                                            <img loading="lazy" class="aligncenter vp-lazyload"
+                                                data-src="images/temp-mit-7.png" data-sizes="auto">
+                                            <br>
+
+                                            However, this full width character ends up reporting a python syntax error
+                                            and cannot be accepted.
+
+
+                                            <img loading="lazy" class="aligncenter vp-lazyload"
+                                                data-src="images/temp-mit-8.png" data-sizes="auto">
+                                            <br>
+
+                                            It is worth noting here, I also attempted using backticks (`), but that once
+                                            again, is not accepted by Python as valid syntax.
+                                            <br><br>
+                                            At this point, I lost a lot of hope and resorted to finding as many writeups
+                                            as I could on Flask/Jinja2 SSTI.
+                                            I found very little writeups containing filters that block {{ }} and the use
+                                            of strings, so my solution was reached mostly by experimentation.
+                                            <br><br>
+                                            I returned to the Flask/Jinja2 documentation and decided to research if
+                                            there was any other way to begin a template without the use of double curly
+                                            brackets as that is also a huge factor in achieving my goal.
+                                            <br>
+
+                                            <img loading="lazy" class="aligncenter vp-lazyload"
+                                                data-src="images/temp-mit-9.png" data-sizes="auto">
+                                            <br>
+
+                                            From the documentation, I spotted the potential use case of {% and %}, which
+                                            has no reason to not work on the web application I provided. Thankfully,
+                                            this lead me to a decent writeup that contained some information on RCE
+                                            (Remote Code Execution) without use of double curly brackets.<br><br>
+
+                                            Click <a href="https://hackmd.io/@Chivato/HyWsJ31dI">here</a> for a link to
+                                            the writeup if you are interested for your own reading.
+
+                                            Here are some key snippets from that writeup that I looked into:<br>
+                                            <img loading="lazy" class="aligncenter vp-lazyload"
+                                                data-src="images/temp-mit-10.png" data-sizes="auto">
+                                            <br>
+                                            <img loading="lazy" class="aligncenter vp-lazyload"
+                                                data-src="images/temp-mit-11.png" data-sizes="auto">
+                                            <br>
+                                            <img loading="lazy" class="aligncenter vp-lazyload"
+                                                data-src="images/temp-mit-12.png" data-sizes="auto">
+                                            <br>
+
+
+                                            Yeah.. well this kind of got a bit complicated, right? I was a bit
+                                            overwhelmed looking at this to find a payload but eventually I realized
+                                            something so simple..<br><br>
+
+                                            {% %} is NOT just limited to if statements and for loops. This level of
+                                            complication is unnecessary and this is where I ended up wasting A LOT of
+                                            time.<br><br>
+
+                                            You may be wondering, especially if you followed along and read some of the
+                                            Jinja2 documentation yourself, what exactly can {% %} contain that would be
+                                            helpful for my use case. Well, my mind was blown when I realized the
+                                            following use case..<br>
+
+                                            <h3>Proof of Concept:</h3>
+                                            <pre
+                                                class="align-items-center"><code class="language-python">?p={% print(6*6) %}</code></pre>
+                                            <br>
+                                            <img loading="lazy" class="aligncenter vp-lazyload"
+                                                data-src="images/temp-mit-14.png" data-sizes="auto">
+                                            <br>
+
+                                            At this point, I was aware that all I had left to do was to convert my
+                                            previous payload into a payload that DOES NOT use strings and test it on the
+                                            first challenge until I got it to execute.<br><br>
+
+                                            Reminder of what the payload is:<br>
+
+                                            <pre
+                                                class="align-items-center"><code class="language-python">?p={{request.application.__globals__.__builtins__.__import__('os').popen('ls').read()}}</code></pre>
+                                            <br>
+
+                                            With this goal in mind, I did a lot of research and I found something! For
+                                            context on this, let’s take another look at one particular line in the
+                                            source code.
+
+                                            <pre
+                                                class="align-items-center"><code class="language-python">p = request.args.get("p")</code></pre>
+                                            <br>
+
+
+
+                                            Alright, with this I decided to take a look at what the request arguments
+                                            actually contain:
+
+                                            <img loading="lazy" class="aligncenter vp-lazyload"
+                                                data-src="images/temp-mit-15.png" data-sizes="auto">
+                                            <br>
+
+                                            This got me thinking.. perhaps I can pass multiple arguments? The block list
+                                            only applies to p as we can see from the source code and with some tinkering
+                                            around I managed to add an extra argument, d.
+
+                                            <img loading="lazy" class="aligncenter vp-lazyload"
+                                                data-src="images/temp-mit-16.png" data-sizes="auto">
+                                            <br>
+
+                                            Following the template of the source code we can form this statement to pass
+                                            d into p.
+
+                                            <img loading="lazy" class="aligncenter vp-lazyload"
+                                                data-src="images/temp-mit-17.png" data-sizes="auto">
+                                            <br>
+
+                                            Alrighty, this is sick. It’s time to adjust my payload on the first
+                                            challenge to work without ANY use of strings. I now know that I can instead
+                                            pass the strings via request parameters that are not sanitized to achieve
+                                            this, so this was not too complicated of a task.
+                                            <br><br>
+                                            New Payload:
+                                            <pre
+                                                class="align-items-center"><code class="language-python">?p={{request.application.__globals__.__builtins__.__import__(request.args.l).popen(request.args.d).read()}}&l=os&d=ls</code></pre>
+                                            <br>
+
+                                            <img loading="lazy" class="aligncenter vp-lazyload"
+                                                data-src="images/temp-mit-18.png" data-sizes="auto">
+                                            <br>
+
+                                            We navigate the directories just like before and do a change directory to
+                                            the .. which is the parent folder that contained the flag and we read it as
+                                            follows:
+
+                                            <img loading="lazy" class="aligncenter vp-lazyload"
+                                                data-src="images/temp-mit-19.png" data-sizes="auto">
+                                            <br>
+
+                                            <img loading="lazy" class="aligncenter vp-lazyload"
+                                                data-src="images/temp-mit-13.png" data-sizes="auto">
+                                            <br>
+
+                                            Overall, I had a lot of fun learning while solving this challenge. I easily spent over 8 hours researching SSTI and Flask/Jinja2 and I aim for this writeup to be fun to follow and hopefully it can teach you a thing or two.
+                                            <br><br>
+                                            Thanks for reading!
+                                            <br><br>
+                                            -mit
+
+                                            <!-- End of Content-->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ghostkit-grid-inner">
+                                    <div class="ghostkit-col ghostkit-col-12">
+                                        <div class="ghostkit-col-content">
+                                            <h2 class="has-text-align-center" id="6-ready-to-use-demos"
+                                                data-ghostkit-sr="fade-up;distance:10px;duration:500;delay:200">
+                                                <br>
+                                                <hr style="margin-bottom: 16px;">
+                                                SECURITY - INTELLIGENCE - DEVELOPMENT
+                                                <hr>
+                                            </h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </main>
+            </div>
+        </div>
+    </div>
+    <script src="https://mercenarylabs.net/js/wpdf.min.js" defer></script>
+    <script id='ghostkit-helper-js-extra'>
+        document.documentElement.classList.add('ghostkit-sr-enabled');
+        document.documentElement.classList.add('vp-lazyload-enabled');
+        var ghostkitVariables = { "themeName": "CyberPulse", "settings": [], "disabledBlocks": [], "media_sizes": { "sm": 567, "md": 777, "lg": 1077, "xl": 1387 }, "timezone": "UTC+00:00", "googleMapsAPIKey": "", "googleMapsAPIUrl": "https:\/\/maps.googleapis.com\/maps\/api\/js?v=3.exp&language=en", "googleMapsLibrary": { "url": "https:\/\/wp.nkdev.info\/cyberpulse\/promo\/wp-content\/plugins\/ghostkit\/assets\/vendor\/gmaps\/gmaps.min.js?ver=0.4.25" }, "googleReCaptchaAPISiteKey": "", "googleReCaptchaAPISecretKey": "", "sidebars": { "sidebar-post": { "id": "sidebar-post", "name": "Posts Sidebar" }, "sidebar-page": { "id": "sidebar-page", "name": "Pages Sidebar" }, "sidebar-woocommerce": { "id": "sidebar-woocommerce", "name": "WooCommerce Sidebar" }, "sidebar-cyberpress": { "id": "sidebar-cyberpress", "name": "CyberPress Sidebar" }, "offcanvas": { "id": "offcanvas", "name": "Offcanvas" }, "mobile-navbar": { "id": "mobile-navbar", "name": "Mobile Navbar" }, "sidebar-above-footer": { "id": "sidebar-above-footer", "name": "Footer Widgets" }, "sidebar-above-footer-1": { "id": "sidebar-above-footer-1", "name": "Footer Widgets Column 1" }, "sidebar-above-footer-2": { "id": "sidebar-above-footer-2", "name": "Footer Widgets Column 2" }, "sidebar-above-footer-3": { "id": "sidebar-above-footer-3", "name": "Footer Widgets Column 3" }, "sidebar-above-footer-4": { "id": "sidebar-above-footer-4", "name": "Footer Widgets Column 4" } }, "icons": [], "shapes": [], "fonts": [], "customTypographyList": [], "variants": { "accordion": { "default": { "title": "Default" } }, "accordion_item": { "default": { "title": "Default" } }, "alert": { "default": { "title": "Default" } }, "button_wrapper": { "default": { "title": "Default" } }, "button": { "default": { "title": "Default" } }, "carousel": { "default": { "title": "Default" } }, "carousel_slide": { "default": { "title": "Default" } }, "changelog": { "default": { "title": "Default" } }, "counter_box": { "default": { "title": "Default" } }, "divider": { "default": { "title": "Default" } }, "gist": { "default": { "title": "Default" } }, "google_maps": { "default": { "title": "Default" } }, "grid": { "default": { "title": "Default" } }, "grid_column": { "default": { "title": "Default" } }, "icon_box": { "default": { "title": "Default" } }, "instagram": { "default": { "title": "Default" } }, "pricing_table": { "default": { "title": "Default" } }, "pricing_table_item": { "default": { "title": "Default" } }, "progress": { "default": { "title": "Default" } }, "tabs": { "default": { "title": "Default" } }, "tabs_tab": { "default": { "title": "Default" } }, "testimonial": { "default": { "title": "Default" } }, "twitter": { "default": { "title": "Default" } }, "video": { "default": { "title": "Default" } } }, "admin_url": "https:\/\/wp.nkdev.info\/cyberpulse\/promo\/wp-admin\/", "admin_templates_url": "https:\/\/wp.nkdev.info\/cyberpulse\/promo\/wp-admin\/edit.php?post_type=ghostkit_template" };
+    </script>
+    <script src='https://mercenarylabs.net/js/helper.min.js' id='ghostkit-helper-js'></script>
+    <script src='https://mercenarylabs.net/js/scrollreveal.min.js' id='scrollreveal-js'></script>
+    <script src='https://mercenarylabs.net/js/main.min.js' id='ghostkit-js'></script>
+    <script src='https://mercenarylabs.net/js/lazysizes-cfg.min.js' id='lazysizes-config-js'></script>
+    <script src='https://mercenarylabs.net/js/lazysizes.min.js' id='lazysizes-js'></script>
+    <script src="https://mercenarylabs.net/js/highlight.min.js"></script>
+    <script> hljs.highlightAll();</script>
+</body>
+
+</html>
