@@ -115,8 +115,10 @@
                                             Hi there! My name is Breado and I am a 14-year-old student currently in the
                                             8th grade. I have a strong interest in programming and have experience with
                                             a range of languages including C, Python, HTML, CSS, JavaScript, batch, and
-                                            VBscript. I am also fascinated by malware development and am currently
-                                            learning how to bypass antivirus systems.
+                                            VBscript. I know the basics of x86 64bit linux assembly, and im currently
+					    learning to work with solid.js ( a javascript frontend framework ). I know a
+					    few frameworks, including Blazor and Bootstrap. While i dont exactly <strong>enjoy</strong>
+					    frontend development, i made a few websites, shown in the Projects section of this site.
                                             <br><br>
                                             To share my knowledge and help others avoid the same struggles I faced when
                                             starting out, I have a blog where I teach people about the things I have
@@ -133,72 +135,19 @@
                                             <br>
 
                                             <h2>My Projects</h2>
-                                            I am currently working on several projects, including the development of a
-                                            chat server using the Python socket library. I am also trying to recreate
-                                            the classic games Pong and Flappy Bird in Python as a fun side project. In
-                                            addition to these projects, I am also working on my blog , which's first
-                                            site is almost done! Its already online and you can visit it <a class="link"
-                                                href="https://breadothecrumblingone.github.io">here</a>
-                                            <br>
-                                            <br>
-                                            To give you a small overview of my work, or how I write my code, here is a
-                                            small snippet from my Python chat server!
-                                            <pre class="align-items-center">
-          <code class="language-python">
-import threading
-import socket
-
-clients = {}
-client_threads = {}
-def handle_client(client, username):
-    
-    while True:
-        # Receive message from client
-        message = client.recv(1024).decode()
-        if not message:
-            break
-        
-        # Broadcast message to all clients
-        for c in clients:
-            c.send(f"{username}: {message}".encode())
-    del clients[client]
-    client.close()
-
-def accept_clients():
-    # Function to accept incoming client connections
-    
-    while True:
-        client, addr = server.accept()
-        print(f"Connected to {addr}")
-        
-        # Receive username from client
-        username = client.recv(1024).decode()
-        
-        # Add client to list and start a new thread for them
-        clients[client] = username
-        thread = threading.Thread(target=handle_client, args=(client, username))
-        thread.start()
-        client_threads[client] = thread
-
-# create the server
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind(("0.0.0.0", 8080))
-server.listen()
-accept_thread = threading.Thread(target=accept_clients)
-accept_thread.start()
-e
-for t in client_threads.values():
-    t.join()
-
-#close server
-server.close()
-
-          </code>
-        </pre>
-                                            <br>
-                                            This is the server-side part of the chat server. I also have a client-side
-                                            script, but I don't want to fill this site with code. :)
-                                            <br>
+					    Im currently working on 2 bigger projects, both are websites.
+					    <a href="http://energyvortex.de">Energyvortex</a><br>
+						A website for someone who sells solar stuff
+					    <a href="http://dacelo.dev">The dacelo project [from devs, for devs]</a><br>
+					    	A Team project currently consisting of me and 2 other people. Its supposed to 
+						be a platform, where developers can post anything about their lives as developers and their experiences. 
+						It will be a platform, where developers can connect, to a community that helps eachother.<br><br>
+					    I also have made a website that is already done. It was made by me for the official Aliucord Discord client
+					    which is like Better-Discord just for mobile! I really enjoyed making that site, as its a big community. 
+					    <a href="http://aliucord.com">Aliucord Website</a>
+					    <br>
+					    I also ( try to ) frequently post wirteups and articles on the <a href="mercenarylabs.net">Mercenarylabs website.</a
+					    <br>
                                             Thats it from me! Have a nice day :D
                                             <br>
                                             <br>
