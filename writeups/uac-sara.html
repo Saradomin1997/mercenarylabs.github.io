@@ -96,9 +96,21 @@
                                             </h3>
 
                                             <h2>Introduction</h2>
-                                            Some things you might want to understand about Windows before reading this:
+											
+											Your everyday Windows user will usually only have 1 account, which is an administrator, that they use for their every-day work. This does not mean that everything they run is necessarily given administrative rights.
+											Windows comes with a security feature called UAC (User Account Control). To summarize:
+											<blockquote>
+											User Account Control (UAC) helps prevent malware from damaging a PC and helps organizations deploy a better-managed desktop. With UAC, apps and tasks always run in the security context of a non-administrator account, unless an administrator specifically authorizes administrator-level access to the system. UAC can block the automatic installation of unauthorized apps and prevent inadvertent changes to system settings.
+											<br>
+											(Microsoft.com)
+											</blockquote>
+											
+											This prevents malware from causing greater harm to your machine, as those things generally require elevated privileges.
+                                            This is where the bypassing of the UAC can be dangerous.
+											<br>
+											<br>
+											Some other things you might want to understand about Windows before reading this:
 											<ol>
-												<li>Normally, processes must explicitly be run as administrator to receive elevated privileges. Not just run while logged into a user in the administrator group.</li>
 												<li>Programs are assigned an integrity level which defines the objects that it has access to. When a process is created, it is given the minimum of the user and the file integrity.
 												You can observe these levels in the process explorer from Windows System Internals Suite:
 												</li>
@@ -124,7 +136,7 @@
 											A list of available features can be retrieved from an admin prompt using <pre>DISM /online /get-capabilities</pre>
 											As an example, if you install a worthless language pack like french via the windows settings, fodhelper will be run with high level integrity and install that language pack for you.<br>
 											This is due to its Application Manifest:
-											<pre class="language-xml hljs"><xmp>
+<pre class="language-xml hljs"><xmp>
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <!-- Copyright (c) Microsoft Corporation -->
 <assembly
@@ -149,10 +161,19 @@
     </asmv3:windowsSettings>
  </asmv3:application>
 </assembly>
-											</xmp></pre>
+</xmp></pre>
 											<h2>How can it be exploited?</h2>
-											In this specific case, we see in process monitor (from Windows Sysinternals) that fodhelper.exe is loading the registry key:<pre>Computer\HKEY_CURRENT_USER\SOFTWARE\Classes\ms-settings\Shell\Open\command</pre>
-											<img src="images/sara_winuac_fod.png"/><br>
+											We can use another tool from Windows Sysinternals, Process Monitor (procmon), to identify what files/operations a program is using. This is a common way to exploit weaknesses in processes that load files that the user can control.
+											<br>
+											<br>
+											Procmon already has some default filters setup for you but the top two inclusions would give you the registry keys used in by fodhelper.exe for example:
+											<br>
+											<br>
+											<img src="images/sara_winuac_procmon.png"/>
+											<br>
+											Using this filter we see in procmon that fodhelper.exe is loading the registry key:<pre>Computer\HKEY_CURRENT_USER\SOFTWARE\Classes\ms-settings\Shell\Open\command</pre>
+											<img src="images/sara_winuac_fod.png"/>
+											<br>
 											We can exploit this behavior by putting something at that registry key which will be run by the auto-elevated fodhelper.
 											Thus elevating a program of our choosing. The registry key can be created using any language really; though each language might have its own quirks for evading WD (Windows Defender). An example in Powershell:
 											<pre>
