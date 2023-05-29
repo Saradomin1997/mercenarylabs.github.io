@@ -124,7 +124,7 @@
 											A list of available features can be retrieved from an admin prompt using <pre>DISM /online /get-capabilities</pre>
 											As an example, if you install a worthless language pack like french via the windows settings, fodhelper will be run with high level integrity and install that language pack for you.<br>
 											This is due to its Application Manifest:
-											<pre><xmp>
+											<pre class="language-xml hljs"><xmp>
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <!-- Copyright (c) Microsoft Corporation -->
 <assembly
@@ -150,7 +150,7 @@
  </asmv3:application>
 </assembly>
 											</xmp></pre>
-                                            <br>
+											<h2>How can it be exploited?</h2>
 											In this specific case, we see in process monitor (from Windows Sysinternals) that fodhelper.exe is loading the registry key:<pre>Computer\HKEY_CURRENT_USER\SOFTWARE\Classes\ms-settings\Shell\Open\command</pre>
 											<img src="images/sara_winuac_fod.png"/><br>
 											We can exploit this behavior by putting something at that registry key which will be run by the auto-elevated fodhelper.
