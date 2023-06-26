@@ -152,7 +152,7 @@
                                             Upon examining the code, we unfortunately do not retrieve SQL credentials as they are accessed through an included PHP file that remains hidden from us. However, what we can observe are the SQL statements used to execute queries for this site. This raises a few concerns. Firstly, it allows us to view the database structure, which is advantageous for hackers targeting SQL injection vulnerabilities. Secondly, it highlights poor coding practices, as the code directly inserts POST parameters into the query instead of using prepared statements, thereby leaving room for SQL injection attacks.
 
                                             <pre><code class="language-php">
-<!-- $get_password = mysql_query("SELECT * FROM tplls_passwords WHERE PasswordID = '2'",$connection)
+$get_password = mysql_query("SELECT * FROM tplls_passwords WHERE PasswordID = '2'",$connection)
 or die(mysql_error());
                                         
 $password = mysql_fetch_array($get_password);
@@ -185,7 +185,7 @@ else
             $check = 'Password changed succesfully!';
         }
     }
-} -->
+}
                                         
                                         </code></pre>
 
